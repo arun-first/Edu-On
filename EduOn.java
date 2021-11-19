@@ -21,6 +21,7 @@ public class EduOn {
 	static Scanner stdInput = new Scanner(System.in);
 	static EduOn edu = new EduOn();
 	static Teacher tch = new Teacher(); // teacher class object
+	static Student stud = new Student(); // student class object
 
 	// main menu
 	static String[] mainMenu = {"","TEACHER","STUDENT","ADMINISTRATOR","EXIT"};
@@ -49,13 +50,14 @@ public class EduOn {
 
 	// executing the menu
 	public void executeMenu () {
-		edu.startScreen();
 
 		// executing accordingly
 		switch (this.option) {
-			case 1: tch.teachMain();
+			case 1: edu.startScreen();
+					tch.teachMain();
 					break;
-			case 2: break;
+			case 2: stud.mainScreen();
+					break;
 			case 3: edu.endScreen();
 					System.exit(0);
 					break;
