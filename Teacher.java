@@ -20,14 +20,16 @@ public class Teacher {
 	int option = 0; // for menu
 	private String msg = " ";
 	boolean send = false; // for messaging
+	private int numMsg = 0; // for counter for messaging
 
 	// menus
-	static String[] teachMenu = {"","SEND MESSAGE","SEARCH STUDENT","EXIT"};
+	static String[] teachMenu = {"","SEND MESSAGE","SEARCH STUDENT","CHECK MESSAGE","EXIT"};
 	static String[] msgMenu = {"","ALL STUDENTS","ONE CLASS STUDENTS","ONE STUDENT","EXIT"};
 	private static String[] studDetails = new String[10]; // for student
 	private static String[] teachDetails = new String[10]; // for teacher
 	private static String[] studField = {"Admn No.","Class","Name","DOB","Father's Name","Mother's Name","Password"};
 	private static String[] teachField = {"Unique ID","Name","DOB","Mobile No.","Password","Subject","ClassTeacher"};
+	private static String[] teacherMsg = new String[10];
 
 	// instantiation
 	static Scanner stdInput = new Scanner(System.in);
@@ -55,7 +57,9 @@ public class Teacher {
 			case 2: System.out.print("\t\t\tAdmn No.: ");
 					teach.srchStud(stdInput.nextInt());
 					break;
-			case 3: System.exit(0);	
+			case 3: teach.checkMsg();
+					break;
+			case 4: System.exit(0);
 					break;
 		}
 	}
@@ -69,12 +73,12 @@ public class Teacher {
 		// taking input the choice
 		do {
 			try {
-				System.out.print("\n\t\t\tEnter [1 - 3]: ");
+				System.out.print("\n\t\t\tEnter [1 - 4]: ");
 				teach.option = stdInput.nextInt();
 			} catch (Exception e) {
 				System.out.println("\t\t\tERROR: invalid input");
 			}
-		} while (teach.option < 1 || teach.option > 3);
+		} while (teach.option < 1 || teach.option > 4);
 	}
 
 	// message send
@@ -314,6 +318,41 @@ public class Teacher {
 			}
 		}
 		return isTeacher;
+	}
+
+	// method to check messages
+	public void checkMsg() {
+		// getting the teacher detail
+		try {
+			read = new BufferedReader(new FileReader("teacher.csv"));
+			String line = " ";
+			String teacher[] = new String[10]; // as a counter
+
+			while ((line = read.readLine()) != null) {
+				teacher = line.split(",");
+
+				// checking messages
+				teach.teacherMsg[teach.numMsg] = teacher[5];
+				teach.numMsg++;
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				read.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
+		if (teach.numMsg != 0)
+			teach.printMsg();
+	}
+
+	// printing the  messages
+	private void printMsg () {
+		for (int i = 0; i < teach.numMsg; i++)
+			System.out.println("\t\t\t\t[ "+i+" ] "+teach.teacherMsg[i]);
 	}
 	
 }
